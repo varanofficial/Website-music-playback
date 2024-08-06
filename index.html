@@ -1,25 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Music Player</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self';">
+  <title>Audio Player</title>
 </head>
 <body>
-    <div class="container">
-        <h1>My Music Player</h1>
-        <div id="player">
-            <audio id="audio" controls crossorigin="anonymous">
-                Your browser does not support the audio element.
-            </audio>
-            <div id="playlist">
-                <div class="track" data-src="https://varanofficial.github.io/Website-music-playback/music/A.mp3">Track 1</div>
-                <div class="track" data-src="https://varanofficial.github.io/Website-music-playback/music/A.mp3">Track 2</div>
-            </div>
-        </div>
+  <audio id="audio" controls>
+    <source src="https://varanofficial.github.io/Website-music-playback/music/A.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div id="playlist">
+    <div class="track" data-src="https://varanofficial.github.io/Website-music-playback/music/A.mp3">Track 1</div>
     </div>
-    <script src="script.js"></script>
+
+  <script>
+    const playlist = document.getElementById('playlist');
+    const tracks = playlist.getElementsByClassName('track');
+    const audio = document.getElementById('audio');
+
+    // Add click event listeners to each track
+    for (let track of tracks) {
+        track.addEventListener('click', function() {
+            const src = this.getAttribute('data-src');
+            audio.src = src;
+            audio.play().catch(error => {
+                console.error('Error playing audio:', error);
+            });
+        });
+    }
+
+    // Disable right-click on the audio element
+    audio.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Disable specific keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 's' || e.key === 'S')) {
+            e.preventDefault();
+        }
+    });
+  </script>
 </body>
 </html>
